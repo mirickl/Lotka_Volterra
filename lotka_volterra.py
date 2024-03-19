@@ -1,9 +1,8 @@
-# Written 26/5/17 by dh4gan
-# Module containing functions for Lotka-Volterra systems
 # (Predator-Prey models)
 
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 predlabel = 'Predator Count (Thousands)'
 preylabel = 'Prey Count (Thousands)'
@@ -80,7 +79,7 @@ class Lotka_Volterra(object):
             ax2.axhline(self.prey_capacity, label= 'Prey carrying capacity', color=preycolor, linestyle='dotted')
         #ax2.axhline(self.predator_capacity, label= 'Predator carrying capacity', color=predcolor, linestyle='dashed')
         plt.show()
-        fig1.savefig(filename, dpi=300)
+        # fig1.savefig(filename, dpi=300)
         
     def plot_predator_vs_prey(self, filename = 'predator_vs_prey.png'):
         
@@ -92,7 +91,7 @@ class Lotka_Volterra(object):
         ax1.set_ylabel(preylabel,fontsize=22)
         ax1.plot(self.predator,self.prey, color='black')
         plt.show()
-        fig1.savefig(filename,dpi=300)
+        # fig1.savefig(filename,dpi=300)
         
     def plot_both_figures(self):
         
@@ -115,6 +114,15 @@ class Lotka_Volterra(object):
         ax3.plot(self.predator,self.prey, color = 'black')
         
         plt.show()
+
+    def save_data(self):
+        res_csv = pd.DataFrame({
+            'time':self.time,
+            'prey':self.prey,
+            'predator':self.predator
+        })
+        print(res_csv.head(10))
+        res_csv.to_csv('res_data_log.csv',encoding='UTF-8',index = False)
         
         
         
