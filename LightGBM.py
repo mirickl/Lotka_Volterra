@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import lightgbm as lgb
 from sklearn.metrics import r2_score, mean_absolute_error
+from sklearn.neural_network import MLPRegressor
 
 # Transcribing the data from the image to a pandas DataFrame
 data = pd.read_csv('res_data_log.csv').iloc[:,1:]
@@ -13,7 +14,7 @@ df = pd.DataFrame(data)
 # Iterate over different values of A from 1 to 10
 for A in range(1, 11):
     print(f"\nA = {A}:")
-    
+
     # Feature engineering: create lag features for the past A observations
     for i in range(A, A + 10):
         df[f'prey_lag_{i}'] = df['prey'].shift(i)
@@ -54,12 +55,12 @@ for A in range(1, 11):
 
     # Predict on the validation set
     y_pred = model.predict(X_val)
-    
+
     # Initialize the MLPRegressor model
-    model1 = MLPRegressor1(hidden_layer_sizes=(32,), activation='relu', solver='adam', max_iter=1000, random_state=42)
+    model1 = MLPRegressor(hidden_layer_sizes=(32,), activation='relu', solver='adam', max_iter=1000, random_state=42)
 
     # Train the model
-    model1.fit(X_train1, y_train1)
+    model1.fit(X_train, y_train)
 
     # Predict on the validation set
     y_pred = model.predict(X_val)
@@ -72,7 +73,7 @@ for A in range(1, 11):
     # Predict on the validation set
     y_pred1 = model1.predict(X_val)
     # Calculate R² and MAE
-    
+
     r2 = r2_score(y_val, y_pred1)
     mae = mean_absolute_error(y_val, y_pred1)
     print("==================:", A)
