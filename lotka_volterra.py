@@ -79,7 +79,7 @@ class Lotka_Volterra(object):
             ax2.axhline(self.prey_capacity, label= 'Prey carrying capacity', color=preycolor, linestyle='dotted')
         #ax2.axhline(self.predator_capacity, label= 'Predator carrying capacity', color=predcolor, linestyle='dashed')
         plt.show()
-        fig1.savefig(filename, dpi=300)
+        # fig1.savefig(filename, dpi=300)
         
     def plot_predator_vs_prey(self, filename = 'predator_vs_prey.png'):
         
@@ -122,7 +122,7 @@ class Lotka_Volterra(object):
             'predator':self.predator
         })
         print(res_csv.head(10))
-        res_csv.to_csv('res_data_log.csv',encoding='UTF-8',index = False)
+        # res_csv.to_csv('res_data_log.csv',encoding='UTF-8',index = False)
         
         
         
