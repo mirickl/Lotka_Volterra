@@ -7,7 +7,7 @@ from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import matplotlib.pyplot as plt
 
 # Transcribing the data from the image to a pandas DataFrame
-data = pd.read_csv('res_data_log.csv').iloc[:, 1:]
+data = pd.read_csv('res_data_log.csv').iloc[:5000000, 1:]
 
 # Creating the DataFrame
 df = pd.DataFrame(data)
@@ -61,8 +61,9 @@ for A in range(1, 11):
     model.fit(X_train, y_train,
               eval_set=[(X_train, y_train), (X_val, y_val)],
               eval_metric=['l2', 'l1'],
-              early_stopping_rounds=20,
-              verbose=False)
+              #early_stopping_rounds=20,
+              #verbose=False
+              )
 
     # Predict on the training and validation sets
     y_pred_train = model.predict(X_train)
@@ -117,6 +118,46 @@ for A in range(1, 11):
     print("LightGBM - MAE (Validation):", mae_val_lgbm)
     print("LightGBM - MSE (Train):", mse_train_lgbm)
     print("LightGBM - MSE (Validation):", mse_val_lgbm)
+
+
+    # Plot and save figures
+    plt.figure(figsize=(10,20))
+
+    # R2 Score Plot
+    plt.subplot(3, 1, 1)
+    plt.plot(range(1, A + 1), r2_scores_lgbm_train, label='LightGBM Train R²')
+    plt.plot(range(1, A + 1), r2_scores_lgbm_test, label='LightGBM Validation R²')
+    plt.xlabel('A')
+    plt.ylabel('R²')
+    plt.title('R² Score')
+    plt.legend()
+    #plt.savefig(f'R2_Score_A_{A}.png')
+
+    # MAE Score Plot
+    plt.subplot(3, 1, 2)
+    plt.plot(range(1, A + 1), mae_scores_lgbm_train, label='LightGBM Train MAE')
+    plt.plot(range(1, A + 1), mae_scores_lgbm_test, label='LightGBM Validation MAE')
+    plt.xlabel('A')
+    plt.ylabel('MAE')
+    plt.title('MAE Score')
+    plt.legend()
+    #plt.savefig(f'MAE_Score_A_{A}.png')
+
+    # MSE Score Plot
+    plt.subplot(3, 1, 3)
+    plt.plot(range(1, A + 1), mse_scores_lgbm_train, label='LightGBM Train MSE')
+    plt.plot(range(1, A + 1), mse_scores_lgbm_test, label='LightGBM Validation MSE')
+    plt.xlabel('A')
+    plt.ylabel('MSE')
+    plt.title('MSE Score')
+    plt.legend()
+
+    plt.savefig(f'LGM_Score_A_{A}.png')
+
+    # Clear the plot
+    plt.clf()
+
+    #MLP
     print("MLPRegressor - R² (Train):", r2_train_mlp)
     print("MLPRegressor - R² (Validation):", r2_val_mlp)
     print("MLPRegressor - MAE (Train):", mae_train_mlp)
@@ -124,45 +165,39 @@ for A in range(1, 11):
     print("MLPRegressor - MSE (Train):", mse_train_mlp)
     print("MLPRegressor - MSE (Validation):", mse_val_mlp)
 
-    # Plot and save figures
-    plt.figure(figsize=(10, 6))
-
-    # R2 Score Plot
-    plt.subplot(2, 2, 1)
-    plt.plot(range(1, A + 1), r2_scores_lgbm_train, label='LightGBM Train R²')
-    plt.plot(range(1, A + 1), r2_scores_lgbm_test, label='LightGBM Validation R²')
+    #MLP_r2
+    plt.figure(figsize=(10,20))
+    plt.subplot(3, 1, 1)
     plt.plot(range(1, A + 1), r2_scores_mlp_train, label='MLPRegressor Train R²')
     plt.plot(range(1, A + 1), r2_scores_mlp_test, label='MLPRegressor Validation R²')
     plt.xlabel('A')
     plt.ylabel('R²')
     plt.title('R² Score')
     plt.legend()
-    plt.savefig(f'R2_Score_A_{A}.png')
 
-    # MAE Score Plot
-    plt.subplot(2, 2, 2)
-    plt.plot(range(1, A + 1), mae_scores_lgbm_train, label='LightGBM Train MAE')
-    plt.plot(range(1, A + 1), mae_scores_lgbm_test, label='LightGBM Validation MAE')
+    #MAE
+    plt.subplot(3, 1, 2)
     plt.plot(range(1, A + 1), mae_scores_mlp_train, label='MLPRegressor Train MAE')
     plt.plot(range(1, A + 1), mae_scores_mlp_test, label='MLPRegressor Validation MAE')
     plt.xlabel('A')
     plt.ylabel('MAE')
     plt.title('MAE Score')
     plt.legend()
-    plt.savefig(f'MAE_Score_A_{A}.png')
 
-    # MSE Score Plot
-    plt.subplot(2, 2, 3)
-    plt.plot(range(1, A + 1), mse_scores_lgbm_train, label='LightGBM Train MSE')
-    plt.plot(range(1, A + 1), mse_scores_lgbm_test, label='LightGBM Validation MSE')
+    #MSE
+    plt.subplot(3, 1, 3)
     plt.plot(range(1, A + 1), mse_scores_mlp_train, label='MLPRegressor Train MSE')
     plt.plot(range(1, A + 1), mse_scores_mlp_test, label='MLPRegressor Validation MSE')
     plt.xlabel('A')
     plt.ylabel('MSE')
     plt.title('MSE Score')
     plt.legend()
-    plt.savefig(f'MSE_Score_A_{A}.png')
 
-    # Clear the plot
+    plt.savefig(f'MLP_Score_A_{A}.png')
+
     plt.clf()
+
+
+
+
 
